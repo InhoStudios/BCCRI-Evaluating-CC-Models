@@ -1,4 +1,5 @@
-folder = 'images';
+folder = 'images\**';
+export_folder = 'exports\';
 images = dir(fullfile(folder, '\*.jpg'));
 
 rows = numel(images);
@@ -11,9 +12,12 @@ values = zeros(rows, 15);
 % | sog a | sog b | sog h | ge a | ge b | ge h |
 
 for i = 1:rows
-
-    filename = fullfile(folder, images(i).name);
+    imgname = images(i).name;
+    foldername = image(i).folder;
+    filename = fullfile(foldername, imgname);
     input_im = uint8(imread(filename));
+    
+    fprintf('Processing %d of %d: %s...\n', i, rows, filename);
     
     disp("Image read");
     
@@ -32,7 +36,7 @@ for i = 1:rows
     [wR,wG,wB,out1]=shades_of_grey(input_im,1);
     greyWorld = uint8(out1);
     imwrite(greyWorld,strcat("gw-", filename));
-%     greyWorld = uint8(imread(strcat("gw-", filename)));
+%     greyWorld = uint8(imread(strcat("greyworld-", filename)));
 
 %     greyWorld = removeHair(greyWorld, filter_rad);
     
@@ -47,7 +51,7 @@ for i = 1:rows
     [wR,wG,wB,out2]=shades_of_grey(input_im,-1);
     maxRGB = uint8(out2);
     imwrite(maxRGB,strcat("mrgb-", filename));
-%     maxRGB = uint8(imread(strcat("mrgb-", filename)));
+%     maxRGB = uint8(imread(strcat("maxrgb-", filename)));
 
 %     maxRGB = removeHair(maxRGB, filter_rad);
 
@@ -62,7 +66,7 @@ for i = 1:rows
     p=5;    % any number between 1 and infinity
     [wR,wG,wB,out3]=shades_of_grey(input_im,p);
     shadesOfGrey = uint8(out3);
-    imwrite(shadesOfGrey,strcat("sog-", filename));
+    imwrite(shadesOfGrey,strcat("shadesofgrey-", filename));
 %     shadesOfGrey = uint8(imread(strcat("sog-", filename)));
 
 %     shadesOfGrey = removeHair(shadesOfGrey, filter_rad);
@@ -75,12 +79,11 @@ for i = 1:rows
     
 %%%%%%%%%%%%%
     
-    mink_norm=5;    % any number between 1 and infinity
     sigma=2;        % sigma 
     diff_order=1;   % differentiation order (1 or 2)
-    [wR,wG,wB,out4]=general_cc(input_im,diff_order,mink_norm,sigma);
+    [wR,wG,wB,out4]=general_cc(input_im,diff_order,p,sigma);
     greyEdge = uint8(out4);
-    imwrite(greyEdge,strcat("ge-", filename));
+    imwrite(greyEdge,strcat("greyedge-", filename));
 %     greyEdge = uint8(imread(strcat("ge-", filename)));
 
 %     greyEdge = removeHair(greyEdge, filter_rad);
