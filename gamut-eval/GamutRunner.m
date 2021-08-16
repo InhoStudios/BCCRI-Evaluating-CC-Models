@@ -1,4 +1,4 @@
-file = 'images/UBC1230-02 Atopic Dermatitis.jpg';
+file = 'res/neutral.png';
 
 img = imread(file);
 gamut_volume(img);

@@ -13,8 +13,9 @@ function projection=gamut_volume(img)
     projection = trisurf(k, r, g, b, 'EdgeColor', 'black');
 
     %%% modify projection
+    camproj('perspective')
     shading flat
-    colormap(gray)
+    % colormap(hsv)
     % contour(rgb);
     xlabel('r')
     ylabel('g')
@@ -22,7 +23,7 @@ function projection=gamut_volume(img)
     xlim([0, 255])
     ylim([0, 255])
     zlim([0, 255])
-    view([1, 1, 1])
+    view([-1, -1, -1])
     grid off
     box on
     pbaspect([1 1 1])
